@@ -7,7 +7,6 @@ import {
   createNavigator,
   createNavigationContainer,
 } from 'react-navigation';
-import NavigatorTypes from 'react-navigation/src/navigators/NavigatorTypes';
 import withCachedChildNavigation from 'react-navigation/src/withCachedChildNavigation';
 import SceneView from 'react-navigation/src/views/SceneView';
 import {
@@ -146,7 +145,7 @@ class DrawerScene extends React.PureComponent {
     return (
       <ResourceSavingContainer
         style={{ flex: 1, overflow: 'hidden' }}
-        visible={this.state.visible}
+        visible={Platform.OS === 'android' ? this.state.visible : true}
       >
         <SceneView
           screenProps={screenProps}
@@ -183,15 +182,12 @@ class DrawerView extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (Platform.OS === 'ios') {
       return;
     }
 
-    // Dumb hack to have our listener take priority over built in listener
-    setTimeout(() => {
-      BackHandler.addEventListener('hardwareBackPress', this._onBackPress);
-    }, 800)
+    BackHandler.addEventListener('hardwareBackPress', this._onBackPress);
   }
 
   componentWillUnmount() {
@@ -378,7 +374,7 @@ class DrawerView extends React.Component {
 }
 
 const DrawerNavigation = createNavigationContainer(
-  createNavigator(DrawerRouter, DrawerRouteConfig, {}, NavigatorTypes.TABS)(
+  createNavigator(DrawerRouter, DrawerRouteConfig, {})(
     props => <DrawerView {...props} />
   )
 );

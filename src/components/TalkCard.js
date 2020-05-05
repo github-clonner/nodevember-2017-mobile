@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   button: {
-    backgroundColor: '#fff',
     padding: 15,
     ...Platform.select({
       ios: {
@@ -121,7 +120,8 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 2, height: 2 },
       },
       android: {
-        elevation: 3,
+        backgroundColor: '#fff',
+        elevation: 2,
       },
     }),
   },
